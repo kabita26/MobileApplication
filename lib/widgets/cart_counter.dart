@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class CartCounter extends StatelessWidget {
@@ -5,7 +6,7 @@ class CartCounter extends StatelessWidget {
   final VoidCallback onIncrement;
   final VoidCallback onDecrement;
 
-  // Add default values to the constructor parameters
+  // Initialize onIncrement and onDecrement
   const CartCounter({
     Key? key,
     required this.quantity,
@@ -18,13 +19,13 @@ class CartCounter extends StatelessWidget {
     return Row(
       children: [
         IconButton(
-          icon: Icon(Icons.remove),
-          onPressed: onDecrement,
-        ),
-        Text('$quantity'),
-        IconButton(
           icon: Icon(Icons.add),
           onPressed: onIncrement,
+        ),
+        Text(quantity.toString()),
+        IconButton(
+          icon: Icon(Icons.remove),
+          onPressed: onDecrement,
         ),
       ],
     );

@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import '../../viewmodels/auth_viewmodel.dart';
 import '../../viewmodels/global_ui_viewmodel.dart';
 
 class AccountScreen extends StatefulWidget {
@@ -12,12 +13,27 @@ class AccountScreen extends StatefulWidget {
 
 class _AccountScreenState extends State<AccountScreen> {
 
+  void logout() async{
+    _ui.loadState(true);
+    try{
+      await _auth.logout().then((value){
+        Navigator.of(context).pushReplacementNamed('/login');
+      })
+          .catchError((e){
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(e.message.toString())));
+      });
+    }catch(err){
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(err.toString())));
+    }
+    _ui.loadState(false);
+  }
+
   late GlobalUIViewModel _ui;
-  // late AuthViewModel _auth;
+  late AuthViewModel _auth;
   @override
   void initState() {
     _ui = Provider.of<GlobalUIViewModel>(context, listen: false);
-    // _auth = Provider.of<AuthViewModel>(context, listen: false);
+    _auth = Provider.of<AuthViewModel>(context, listen: false);
     super.initState();
   }
 
@@ -30,33 +46,33 @@ class _AccountScreenState extends State<AccountScreen> {
             height: 10,
           ),
           Image.asset(
-            "assets/images/logo.jpg",
+            "assets/images/logo.png",
             height: 100,
             width: 100,
           ),
           SizedBox(
             height: 10,
           ),
-          // Container(
-          //   child: Text(_auth.loggedInUser!.email.toString()),
-          // ),
-          // SizedBox(
-          //   height: 10,
-          // ),
-          // makeSettings(
-          //     icon: Icon(Icons.sell),
-          //     title: "My Products",
-          //     subtitle: "Get listing of my products",
-          //     onTap: (){
-          //       Navigator.of(context).pushNamed("/my-products");
-          //     }
-          // ),
+          Container(
+            child: Text(_auth.loggedInUser!.email.toString()),
+          ),
+          SizedBox(
+            height: 10,
+          ),
+          makeSettings(
+              icon: Icon(Icons.sell),
+              title: "My Products",
+              subtitle: "Get listing of my products",
+              onTap: (){
+                Navigator.of(context).pushNamed("/my-products");
+              }
+          ),
           makeSettings(
               icon: Icon(Icons.logout),
               title: "Logout",
               subtitle: "Logout from this application",
               onTap: (){
-                // logout();
+                logout();
               }
           ),
           makeSettings(
@@ -97,4 +113,3 @@ class _AccountScreenState extends State<AccountScreen> {
     );
   }
 }
-

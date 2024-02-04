@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:skincare_android/provider/productProvider.dart';
 import 'package:skincare_android/screens/pages/intro_page.dart';
+import 'package:skincare_android/viewmodels/cartViewModel.dart';
 import 'package:skincare_android/viewmodels/global_ui_viewmodel.dart';
 import 'package:provider/provider.dart';
+import 'package:skincare_android/viewmodels/auth_viewmodel.dart';
 
 import 'firebase_options.dart';
 import 'viewmodels/auth_viewmodel.dart';
@@ -25,6 +27,9 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_)=> GlobalUIViewModel()),
         ChangeNotifierProvider<AuthViewModel>(
           create: (_) => AuthViewModel(),
+        ),
+        ChangeNotifierProvider<CartViewModel>(
+          create: (_) => CartViewModel(),
         ),
       ],
       child: MaterialApp(

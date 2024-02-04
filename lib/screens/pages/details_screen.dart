@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:skincare_android/screens/pages/CartPage.dart';
 import '../../constants.dart';
-import '../../model/productModel.dart';
 import '../components/cart_counter.dart';
-import '../components/fav_btn.dart';
 import '../components/price.dart';
+import 'CartPage.dart';
 
 class DetailsScreen extends StatefulWidget {
   final String imageURL;
@@ -25,10 +23,7 @@ class DetailsScreen extends StatefulWidget {
 
 class _DetailsScreenState extends State<DetailsScreen> {
   String _cartTag = '';
-  String buyTag= '';
-
-
-
+  Map<String, int> _cartItems = {};
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -37,27 +32,16 @@ class _DetailsScreenState extends State<DetailsScreen> {
           width: double.infinity,
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: defaultPadding),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                ElevatedButton(
-                  onPressed: () {
-                    // Consider updating a CartModel here or navigating with product data
-                    // For example: Navigator.push(context, MaterialPageRoute(builder: (context) => CartPage(product: widget)));
-                    print("Add to Cart pressed");
-                  },
-                  child: Text("Add to Cart"),
-                ),
-                ElevatedButton(
-                  onPressed: () {
-                    setState(() {
-                      buyTag = '_buyTag';
-                    });
-                    print("Buy Now pressed");
-                  },
-                  child: Text("Buy Now"),
-                ),
-              ],
+            child: ElevatedButton(
+              onPressed: () {
+                setState(() {
+                  _cartTag = '_cartTag';
+                });
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context)=>CartPage( itemName: '',itemPrice: '',itemQuantity: '',))
+                );
+              },
+              child: Text("Add to Cart"),
             ),
           ),
         ),
@@ -86,10 +70,18 @@ class _DetailsScreenState extends State<DetailsScreen> {
                     ),
                   ),
                 ),
+
               ],
             ),
           ),
-          CartCounter(quantity: '1', onIncrement: () {  },),
+          CartCounter
+            (quantity: 1, onIncrement: () {
+            // Handle increment logic here
+          },
+            onDecrement: () {
+              // Handle decrement logic here
+            },
+          ),
 
           SizedBox(height: defaultPadding * 1.5),
           Padding(
@@ -103,24 +95,11 @@ class _DetailsScreenState extends State<DetailsScreen> {
 
           SizedBox(height: defaultPadding),
           Text(
-            widget.description,
-            style: TextStyle(
-              fontSize: 14,
-              color: Colors.blueGrey,
-              fontWeight: FontWeight.normal,
-            ),
-            textAlign: TextAlign.left,
+              widget.description,
+              style: TextStyle(fontSize: 14, color: Colors.blueGrey, fontWeight: FontWeight.normal),
+              textAlign: TextAlign.left
           ),
 
-          if (buyTag.isNotEmpty)
-            Text(
-              buyTag,
-              style: TextStyle(
-                fontSize: 16,
-                color: Colors.green,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
         ],
       ),
     );
@@ -137,7 +116,12 @@ class _DetailsScreenState extends State<DetailsScreen> {
       title: Text(
         widget.name,
         style: TextStyle(color: Colors.black),
+        // "Details",
       ),
+      // actions: [
+      //   FavBtn(radius: 10),
+      //   SizedBox(width: defaultPadding),
+      // ],
     );
   }
 }

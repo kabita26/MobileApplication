@@ -1,17 +1,28 @@
 import 'package:flutter/material.dart';
+import 'package:skincare_android/model/CartModel.dart';
 
 class CartViewModel extends ChangeNotifier {
-  List<String> _cartItems = [];
+  CartModel _cartModel = CartModel();
 
-  List<String> get cartItems => _cartItems;
+  CartModel get cartItems => _cartModel;
 
-  void addToCart(String item) {
-    _cartItems.add(item);
+  void addToCart(String itemName, int quantity, String price) {
+    _cartModel.addItem(itemName, quantity, price);
     notifyListeners();
   }
 
-  void removeFromCart(String item) {
-    _cartItems.remove(item);
+  void removeFromCart(String itemName) {
+    _cartModel.removeItem(itemName);
+    notifyListeners();
+  }
+
+  void increaseQuantity(String itemName) {
+    _cartModel.incrementItemQuantity(itemName);
+    notifyListeners();
+  }
+
+  void decreaseQuantity(String itemName) {
+    _cartModel.decrementItemQuantity(itemName);
     notifyListeners();
   }
 }

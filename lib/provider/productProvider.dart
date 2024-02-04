@@ -10,9 +10,14 @@ class ProductProvider extends ChangeNotifier {
   List<QueryDocumentSnapshot<ProductModel>> get productsList => _productsList;
   late ProductModel productModel;
 
+  bool _isLoading = false;
+  bool get isLoading => _isLoading;
+
   Future<void> fetchProducts() async {
+    _isLoading = true;
     final res = await ProductRepository().getData(productsList);
     _productsList = res;
+    _isLoading = false;
     notifyListeners();
   }
 
